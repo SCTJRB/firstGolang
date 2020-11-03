@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *, body {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    html{
+        height: 100%;
+    }
+    body {
+        height: 100%;
+        margin: 0px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 20px;
+        background-color: #fff;
+    }
+    .content-box{
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+    }
+    .content-box .students-box{
+        width: 100%;
+        height: 100%;
+        border: 1px solid #dedede;
+    }
+    .content-box > .courses-box{
+        border-right: none;
+    }
+
+    .content-box > .students-box>h2{
+        text-align: center;
+        padding: 50px;
+    }
+    .content-box > .students-box>div{
+        padding: 20px;
+        text-align: center;
+    }
+    .content-box > .students-box>div>input{
+        /*height: 50px;*/
+        /*width: 30%;*/
+        /*outline: none;*/
+        /*font-size: 18px;*/
+        /*padding: 0 20px;*/
+    }
+    .content-box > .students-box>.content>#courses-box{
+        text-align: center;
+    }
+    .content-box > .students-box>.content>#students-box{
+        margin-top: 50px;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    .content-box > .students-box>.content>#students-box>#students{
+        height: 35px;
+        width: 400px;
+        padding: 0 20px;
+    }
+    .content-box > .students-box>.content>#students-box>#AddStudents{
+        height: 38px;
+        width: 120px;
+        margin-left: 20px;
+        /*display: none;*/
+    }
+    .content-box > .students-box>.content>#courses-box>ul{
+       display: flex;
+        list-style: none;
+        justify-content: center;
+    }
+    .content-box > .students-box>.content>#courses-box>ul>li{
+        margin-left: 20px;
+        font-size: 18px;
+    }
+    .content-box > .students-box>.content>#courses-box>ul>li>label{
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .content-box > .students-box>.content>#courses-box>ul>li>label>input{
+        /*outline: none;*/
+
+    }
+    .content-box > .students-box>.content>#courses-box>button{
+        height: 38px;
+        width: 120px;
+        margin-left: 20px;
+    }
+
+</style>
+<body>
+<div class="content-box">
+    <div class="content-box">
+        <div class="students-box">
+            <h2>课程报名</h2>
+            <div class="content">
+                <div id="students-box">
+                    <span>请选择学生:</span>
+                    <select>
+                        <option>222</option>
+                    </select>
+                </div>
+                <div id="courses-box"></div>
+
+{{/*                <div id="students-box"><input type="text" placeholder="请输入学生" onkeyup="keyup(this)" id="students"><button id="AddStudents" onclick="addStudents()">添加</button></div>*/}}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../static/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        getCoursesList();
+    });
+    function getCoursesList() {
+        $.ajax({
+            url:'/getCoursesList',
+            type:'get',
+            dataType:'json',
+            success:function (res) {
+                if(res.err_code === 0){
+                    var dataArr = res.data;
+                    $("#courses-box").empty();
+                    if(dataArr.length > 0){
+                        var str = "<ul><li>请先选择课程：</li>"
+                        dataArr.forEach(function (item) {
+                            str += "<li><label for="+item.id+"><input type='checkbox' onchange='chanheCheck(this)' id="+item.id+" value="+item.id+">&nbsp;"+item.name+"</label></li>"
+                        });
+                        str += "</ul>"
+                    }else {
+                        var str = "<button onclick='breakAddCourses()'>请先添加课程</button>";
+                    }
+                    $("#courses-box").append(str)
+                }
+            }
+        })
+    }
+
+    //选择课程
+    var checkArr = [];
+    function chanheCheck(e) {
+        var isChecked = $(e).is(':checked');
+        var id = $(e).attr("id");
+        if(isChecked){
+            checkArr.push(id);
+        }else {
+            checkArr.splice(checkArr.indexOf(id),1)
+        }
+        if(checkArr.length > 0){
+            // $("#students-box").show()
+        }else {
+            // $("#students-box").hide()
+        }
+    }
+
+
+    function breakAddCourses() {
+        window.location.href = "/addPage.html"
+    }
+    function keyup(e){
+        var val = $(e).val();
+        if(val.length > 0){
+            $("#AddStudents").show();
+        }else {
+            $("#AddStudents").hide();
+        }
+    }
+
+    function addStudents() {
+        var courses = checkArr.join(",");
+        var name = $("#students").val();
+        if(students && courses){
+            var params = {name:name,courses:courses};
+            $.ajax({
+                url:'/addStudents',
+                data: params,
+                type:'post',
+                dataType:'json',
+                success:function (res) {
+                    if(res.err_code === 0){
+                        checkArr = [];
+                        $("#students").val("");
+                        // $("#students-box").hide();
+                        // $("#AddStudents").hide();
+                        getCoursesList();
+                    }
+                }
+            })
+        }
+    }
+</script>
+</html>

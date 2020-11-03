@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *, body {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    html{
+        height: 100%;
+    }
+    body {
+        height: 100%;
+        margin: 0px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 20px;
+        background-color: #fff;
+    }
+    .content-box{
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+    }
+    .content-box > .courses-box,.content-box > .students-box{
+        width: 50%;
+        height: 100%;
+        border: 1px solid #dedede;
+    }
+    .content-box > .courses-box{
+        border-right: none;
+    }
+
+    .content-box > .courses-box >h2,.content-box > .students-box>h2{
+        text-align: center;
+        padding: 50px;
+    }
+    .content-box > .courses-box >div,.content-box > .students-box>div{
+        margin-top: 200px;
+        padding: 20px;
+    }
+    .content-box > .courses-box >div>input,.content-box > .students-box>div>input{
+        height: 50px;
+        width: 75%;
+        outline: none;
+        font-size: 18px;
+        padding: 0 20px;
+    }
+    .content-box > .courses-box >div>button,.content-box > .students-box>div>button{
+        height: 54px;
+        width: 10%;
+        margin-left: 20px;
+    }
+</style>
+<body>
+    <div class="content-box">
+        <div class="courses-box">
+            <h2>添加课程</h2>
+            <div>
+                <input type="text" placeholder="请输入课程" id="courses">
+                <button id="AddCourses">添加</button>
+            </div>
+        </div>
+        <div class="students-box">
+            <h2>添加学生</h2>
+            <div>
+                <input type="text" placeholder="请输入学生" id="students">
+                <button id="AddStudents">添加</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../static/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $("#AddCourses").click(function () {
+        addCourses()
+    });
+    $("#courses").bind("keypress",function (event) {
+        if(event.keyCode == 13){
+            addCourses()
+        }
+    });
+
+    function addCourses(){
+        var courses = $("#courses").val();
+        if(courses){
+            var params = {name:courses};
+            $.ajax({
+                url:'/addCourses',
+                data: params,
+                type:'post',
+                dataType:'json',
+                success:function (res) {
+                    if(res.err_code === 0){
+                        $("#courses").val("")
+                    }
+                }
+            })
+        }
+    }
+
+
+    $("#AddStudents").click(function () {
+        addStudents();
+    });
+    $("#students").bind("keypress",function (event) {
+        if(event.keyCode == 13){
+            addStudents();
+        }
+    });
+
+    function addStudents() {
+        var students = $("#students").val();
+        if(students){
+            var params = {name:students};
+            $.ajax({
+                url:'/addStudents',
+                data: params,
+                type:'post',
+                dataType:'json',
+                success:function (res) {
+                    if(res.err_code === 0){
+                        $("#students").val("")
+                    }
+                }
+            })
+        }
+    }
+</script>
+</html>

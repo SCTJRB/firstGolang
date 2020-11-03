@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <style>
+        *, body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        html{
+            height: 100%;
+        }
+        body {
+            height: 100%;
+            margin: 0px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 20px;
+            background-color: #fff;
+        }
+        .content-box{
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+        }
+        .content-box > .courses-box,.content-box > .students-box{
+            width: 50%;
+            height: 100%;
+            border: 1px solid #dedede;
+        }
+        .content-box > .courses-box{
+            border-right: none;
+        }
+
+        .content-box > .courses-box >h2,.content-box > .students-box>h2{
+            text-align: center;
+            padding: 50px;
+        }
+        .content-box > .courses-box >ul,.content-box > .students-box>ul{
+            margin-top: 20px;
+            padding: 20px;
+        }
+        .content-box > .courses-box >ul>li,.content-box > .students-box>ul>li{
+            list-style: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            border: 1px solid #bdbdbd;
+        }
+    </style>
+    <body>
+        <div class="content-box">
+            <div class="courses-box">
+                <h2>课程列表</h2>
+                <ul id="courses-ul"></ul>
+            </div>
+            <div class="students-box">
+                <h2>学生列表</h2>
+                <ul id="students-ul"></ul>
+            </div>
+        </div>
+    </body>
+    <script src="../static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getCoursesList();
+            getStudentsList();
+        });
+
+        function getCoursesList() {
+            $.ajax({
+                url:'/getCoursesList',
+                type:'get',
+                dataType:'json',
+                success:function (res) {
+                    if(res.err_code === 0){
+                        var dataArr = res.data;
+                        var str = '';
+                        if(dataArr.length > 0){
+                            dataArr.forEach(function (item) {
+                                str += "<li>"+item.name+"</li>"
+                            });
+                            $("#courses-ul").append(str)
+                        }
+                    }
+                }
+            })
+        }
+        function getStudentsList() {
+            $.ajax({
+                url:'/getStudentsList',
+                type:'get',
+                dataType:'json',
+                success:function (res) {
+                    if(res.err_code === 0){
+                        var dataArr = res.data;
+                        var str = '';
+                        if(dataArr.length > 0){
+                            dataArr.forEach(function (item) {
+                                str += "<li>"+item.name+"</li>"
+                            });
+                            $("#students-ul").append(str)
+                        }
+                    }
+                }
+            })
+        }
+    </script>
+</html>
