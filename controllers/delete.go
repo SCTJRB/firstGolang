@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"firstProject/models"
+	"firstProject/DB"
 	"fmt"
 	"github.com/astaxie/beego"
 )
@@ -41,7 +41,7 @@ func (this DelController) DelCourses()  {
 		fmt.Println(err)
 		return
 	}else {
-		db := models.GetDB()
+		db := DB.GetDB()
 		if err := db.Where("id = ?", id).Delete(&CoursesDel{}).Error;err !=nil{
 			fmt.Println("删除失败", err)
 			return
@@ -62,7 +62,7 @@ func (this DelController) DelStudents()  {
 		fmt.Println(err)
 		return
 	}else {
-		db := models.GetDB()
+		db := DB.GetDB()
 		if err := db.Where("id = ?", id).Delete(&StudentDel{}).Error;err !=nil{
 			fmt.Println("删除失败", err)
 			return

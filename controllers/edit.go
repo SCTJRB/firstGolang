@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"firstProject/models"
+	"firstProject/DB"
 	"fmt"
 	"github.com/astaxie/beego"
 )
@@ -45,7 +45,7 @@ func (this *EditController) EditCourses() {
 	}
 	name := this.GetString("name")
 	fmt.Println(name)
-	db := models.GetDB()
+	db := DB.GetDB()
 	c := CoursesEdit{}
 	db.Where("id = ?", id).Take(&c)
 	if err := db.Model(&c).Update("name", name).Error; err != nil {
@@ -69,7 +69,7 @@ func (this *EditController) EditStudents() {
 	}
 	name := this.GetString("name")
 	fmt.Println(name)
-	db := models.GetDB()
+	db := DB.GetDB()
 	c := StudentEdit{}
 	db.Where("id = ?", id).Take(&c)
 	if err := db.Model(&c).Update("name", name).Error; err != nil {

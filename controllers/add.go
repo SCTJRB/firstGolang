@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"firstProject/models"
+	"firstProject/DB"
 	"fmt"
 	"github.com/astaxie/beego"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -41,7 +41,7 @@ func (this *AddController) AddPage() {
 func (this *AddController) AddCourses() {
 	name := this.GetString("name")
 	if name != "" {
-		db := models.GetDB()
+		db := DB.GetDB()
 		c := &Courses{Name: name}
 		if err := db.Create(c).Error; err != nil {
 			fmt.Println("插入失败", err)
@@ -61,7 +61,7 @@ func (this *AddController) AddCourses() {
 func (this *AddController) AddStudents() {
 	name := this.GetString("name")
 	if name != "" {
-		db :=  models.GetDB()
+		db :=  DB.GetDB()
 		c := &Student{Name: name}
 		if err := db.Create(c).Error; err != nil {
 			fmt.Println("插入失败", err)

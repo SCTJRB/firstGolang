@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"firstProject/models"
+	"firstProject/DB"
 	"fmt"
 	"github.com/astaxie/beego"
 )
@@ -41,7 +41,7 @@ func (this *SelectController) SelectPage() {
 }
 
 func (this *SelectController) SelectCourses() {
-	db := models.GetDB()
+	db := DB.GetDB()
 	var c [] CoursesTable
 	if err := db.Find(&c).Error;err != nil {
 		fmt.Println("查询失败", err)
@@ -57,7 +57,7 @@ func (this *SelectController) SelectCourses() {
 }
 
 func (this *SelectController) SelectStudents() {
-	db := models.GetDB()
+	db := DB.GetDB()
 	var s [] StudentsTable
 	if err := db.Find(&s).Error;err != nil {
 		fmt.Println("查询失败", err)
