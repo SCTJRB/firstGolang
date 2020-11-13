@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"firstProject/DB"
+	"firstProject/models"
 	"fmt"
 	"github.com/astaxie/beego"
 )
@@ -10,29 +11,7 @@ type SelectController struct {
 	beego.Controller
 }
 
-type CoursesTable struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-}
-func (v CoursesTable) TableName() string {
-	return "courses"
-}
 
-
-type StudentsTable struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-}
-func (v StudentsTable) TableName() string {
-	return "student"
-}
-
-
-type selectJson struct {
-	Err_code int         `json:"err_code"`
-	Err_msg  string      `json:"err_msg"`
-	Data     interface{} `json:"data"`
-}
 
 
 
@@ -42,11 +21,11 @@ func (this *SelectController) SelectPage() {
 
 func (this *SelectController) SelectCourses() {
 	db := DB.GetDB()
-	var c [] CoursesTable
+	var c [] models.CoursesTable
 	if err := db.Find(&c).Error;err != nil {
 		fmt.Println("查询失败", err)
 	}else {
-		res := selectJson{
+		res := models.SelectJson{
 			Err_code: 0,
 			Err_msg:  "请求成功",
 			Data:     c,
@@ -58,11 +37,11 @@ func (this *SelectController) SelectCourses() {
 
 func (this *SelectController) SelectStudents() {
 	db := DB.GetDB()
-	var s [] StudentsTable
+	var s [] models.StudentsTable
 	if err := db.Find(&s).Error;err != nil {
 		fmt.Println("查询失败", err)
 	}else {
-		res := selectJson{
+		res := models.SelectJson{
 			Err_code: 0,
 			Err_msg:  "请求成功",
 			Data:     s,

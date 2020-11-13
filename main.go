@@ -1,7 +1,6 @@
 package main
 
 import (
-	//_ "firstProject/models"
 	_ "firstProject/routers"
 	"github.com/astaxie/beego"
 )

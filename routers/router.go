@@ -10,7 +10,6 @@ func init() {
 	beego.Router("/selectPage", &controllers.SelectController{}, "get:SelectPage")
 	beego.Router("/addPage", &controllers.AddController{}, "get:AddPage")
 	beego.Router("/editPage", &controllers.EditController{}, "get:EditPage")
-	beego.Router("/entryPage", &controllers.EntryController{}, "get:EntryPage")
 
 	beego.Router("/getCoursesList", &controllers.SelectController{}, "get:SelectCourses")
 	beego.Router("/getStudentsList", &controllers.SelectController{}, "get:SelectStudents")
